@@ -6,7 +6,7 @@ import 'package:wordle/wordle/wordle.dart';
 const _qwerty = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
   ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-  ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'DEL']
+  ['Z', 'X', 'C', 'V', 'B', 'N', 'M', 'DEL']
 ];
 
 class Keyboard extends StatelessWidget {
@@ -24,28 +24,47 @@ class Keyboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: _qwerty
-          .map((keyRow) => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: keyRow.map((letter) {
-                  if (letter == 'DEL') {
-                    return _KeyboardButton.delete(onTap: onDeleteTapped);
-                  } else if (letter == 'ENTER') {
-                    return _KeyboardButton.enter(onTap: onEnterTapped);
-                  }
-                  final letterKey = letters.firstWhere(
-                    (e) => e.val == letter,
-                    orElse: () => Letter.empty(),
-                  );
-                  return _KeyboardButton(
-                      onTap: () => onKeyTapped(letter),
-                      letter: letter,
-                      backgroundColor: letterKey != Letter.empty()
-                          ? letterKey.backgroundColor
-                          : Colors.grey);
-                }).toList(),
-              ))
-          .toList(),
+      children: [
+        Column(
+          children: _qwerty
+              .map((keyRow) => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: keyRow.map((letter) {
+                      if (letter == 'DEL') {
+                        return _KeyboardButton.delete(onTap: onDeleteTapped);
+                      }
+                      //  else if (letter == 'ENTER') {
+                      //   return EnterButton(
+                      //     onTap: onEnterTapped,
+                      //     backgroundColor: Colors.white,
+                      //     width: 70,
+                      //     height: 48,
+                      //   );
+                      // }
+                      final letterKey = letters.firstWhere(
+                        (e) => e.val == letter,
+                        orElse: () => Letter.empty(),
+                      );
+                      return _KeyboardButton(
+                          onTap: () => onKeyTapped(letter),
+                          letter: letter,
+                          backgroundColor: letterKey != Letter.empty()
+                              ? letterKey.backgroundColor
+                              : Colors.grey);
+                    }).toList(),
+                  ))
+              .toList(),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        EnterButton(
+          onTap: onEnterTapped,
+          backgroundColor: Colors.white,
+          width: 100,
+          height: 48,
+        )
+      ],
     );
   }
 }
@@ -68,18 +87,19 @@ class _KeyboardButton extends StatelessWidget {
   factory _KeyboardButton.delete({required VoidCallback onTap}) =>
       _KeyboardButton(
         onTap: onTap,
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.redAccent,
         letter: 'DEL',
         width: 56,
       );
 
-  factory _KeyboardButton.enter({required VoidCallback onTap}) =>
-      _KeyboardButton(
-        onTap: onTap,
-        backgroundColor: Colors.grey,
-        letter: 'ENTER',
-        width: 56,
-      );
+  // factory _KeyboardButton.enter({required VoidCallback onTap}) =>
+
+  //     _KeyboardButton(
+  //       onTap: onTap,
+  //       backgroundColor: Colors.grey,
+  //       letter: 'ENTER',
+  //       width: 56,
+  //     );
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +116,45 @@ class _KeyboardButton extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               letter,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EnterButton extends StatelessWidget {
+  const EnterButton(
+      {super.key,
+      required this.height,
+      required this.width,
+      required this.onTap,
+      required this.backgroundColor});
+  final double height;
+  final double width;
+  final VoidCallback onTap;
+  final Color backgroundColor;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
+      child: Material(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(40),
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            height: height,
+            width: width,
+            alignment: Alignment.center,
+            child: Text(
+              'Submit'.toUpperCase(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black),
             ),
           ),
         ),
