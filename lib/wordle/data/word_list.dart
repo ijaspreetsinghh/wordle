@@ -5,18 +5,18 @@ const List<String> fiveLetterWords = [
   'about',
   'would',
   'these',
-  'other'
-      'words'
-      'could',
-  'write'
-      'first',
-  'water'
-      'after',
+  'other',
+  'words',
+  'could',
+  'write',
+  'first',
+  'water',
+  'after',
   'where',
   'right',
   'think',
   'three',
   'years',
-  'place'
-      'sound',
+  'place',
+  'sound',
 ];
